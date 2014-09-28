@@ -154,7 +154,9 @@ def UploadFile(request):
         "uploadvideo":"videoAllowFiles"
     }
     if upload_allow_type.has_key(action):
-        allow_type= list(request.GET.get(upload_allow_type[action],USettings.UEditorUploadSettings.get(upload_allow_type[action],"")))
+        #allow_type= list(request.GET.get(upload_allow_type[action],USettings.UEditorUploadSettings.get(upload_allow_type[action],"")))
+        # 此处客户端ajax请求服务器上传配置的时候 imageAllowFiles 参数内容为列表格式的字符串，直接list转换是把整个字符串每字符切割处理了，实际需要是转换为扩展名列表
+        allow_type= eval(request.GET.get(upload_allow_type[action],USettings.UEditorUploadSettings.get(upload_allow_type[action],"")))
         if not upload_original_ext  in allow_type:
             state=u"服务器不允许上传%s类型的文件。" % upload_original_ext
 
